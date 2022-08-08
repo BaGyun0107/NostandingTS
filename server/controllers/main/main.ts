@@ -1,11 +1,13 @@
-const { sequelize } = require('../../models');
-const initModels = require('../../models/init-models');
-const Models = initModels(sequelize);
+import { Request, Response, NextFunction } from 'express';
+import { initModels } from '../../models/init-models';
+const Sequelize = require('sequelize');
+// const { sequelize } = require('../../models');
+const Models = initModels(Sequelize);
 
 require('dotenv').config();
 
 module.exports = {
-  get: async (req, res) => {
+  get: async (req: Request, res: Response, next: NextFunction) => {
     const { order } = req.query;
 
     if (order === 'score') {
@@ -55,7 +57,7 @@ module.exports = {
         order: [['score_average', 'DESC']],
       });
 
-      const arrInfo = [];
+      const arrInfo: Array<object> = [];
       mainInfo.map(el => {
         arrInfo.push({
           image_src: el.image_src,
@@ -65,7 +67,7 @@ module.exports = {
           shop_name: el.user.shop_name,
           address_line1: el.user.address_line1,
           address_line2: el.user.address_line2,
-          is_marked: el.Bookmarks.is_marked,
+          // is_marked: el.Bookmarks.is_marked,
           total_views: el.total_views,
           score_average: el.score_average,
         });
@@ -123,7 +125,7 @@ module.exports = {
         order: [['total_views', 'DESC']],
       });
 
-      const arrInfo = [];
+      const arrInfo: Array<object> = [];
       mainInfo.map(el => {
         arrInfo.push({
           image_src: el.image_src,
@@ -133,7 +135,8 @@ module.exports = {
           shop_name: el.user.shop_name,
           address_line1: el.user.address_line1,
           address_line2: el.user.address_line2,
-          is_marked: el.Bookmarks.is_marked,
+          //! is_marked 왜 안읽히는지 알아보기
+          // is_marked: el.Bookmarks.is_marked,
           total_views: el.total_views,
           score_average: el.score_average,
         });
@@ -189,7 +192,7 @@ module.exports = {
         order: [[{ model: Models.User, as: 'user' }, 'shop_name', 'ASC']],
       });
 
-      const arrInfo = [];
+      const arrInfo: Array<object> = [];
       mainInfo.map(el => {
         arrInfo.push({
           image_src: el.image_src,
@@ -199,7 +202,7 @@ module.exports = {
           shop_name: el.user.shop_name,
           address_line1: el.user.address_line1,
           address_line2: el.user.address_line2,
-          is_marked: el.Bookmarks.is_marked,
+          // is_marked: el.Bookmarks.is_marked,
           total_views: el.total_views,
           score_average: el.score_average,
         });

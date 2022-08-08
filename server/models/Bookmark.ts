@@ -10,12 +10,18 @@ export interface BookmarkAttributes {
   is_marked?: number;
 }
 
-export type BookmarkPk = "id";
+export type BookmarkPk = 'id';
 export type BookmarkId = Bookmark[BookmarkPk];
-export type BookmarkOptionalAttributes = "id" | "is_marked";
-export type BookmarkCreationAttributes = Optional<BookmarkAttributes, BookmarkOptionalAttributes>;
+export type BookmarkOptionalAttributes = 'id' | 'is_marked';
+export type BookmarkCreationAttributes = Optional<
+  BookmarkAttributes,
+  BookmarkOptionalAttributes
+>;
 
-export class Bookmark extends Model<BookmarkAttributes, BookmarkCreationAttributes> implements BookmarkAttributes {
+export class Bookmark
+  extends Model<BookmarkAttributes, BookmarkCreationAttributes>
+  implements BookmarkAttributes
+{
   id!: number;
   user_id!: number;
   shop_id!: number;
@@ -33,61 +39,58 @@ export class Bookmark extends Model<BookmarkAttributes, BookmarkCreationAttribut
   createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Bookmark {
-    return Bookmark.init({
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
-    },
-    shop_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Shop',
-        key: 'id'
-      }
-    },
-    is_marked: {
-      type: DataTypes.TINYINT,
-      allowNull: true
-    }
-  }, {
-    sequelize,
-    tableName: 'Bookmark',
-    timestamps: false,
-    indexes: [
+    return Bookmark.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          autoIncrement: true,
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        user_id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
+        shop_id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Shop',
+            key: 'id',
+          },
+        },
+        is_marked: {
+          type: DataTypes.TINYINT,
+          allowNull: true,
+        },
       },
       {
-        name: "fk_Bookmark_Shop1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "shop_id" },
-        ]
+        sequelize,
+        tableName: 'Bookmark',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'fk_Bookmark_Shop1_idx',
+            using: 'BTREE',
+            fields: [{ name: 'shop_id' }],
+          },
+          {
+            name: 'fk_Bookmark_User1_idx',
+            using: 'BTREE',
+            fields: [{ name: 'user_id' }],
+          },
+        ],
       },
-      {
-        name: "fk_Bookmark_User1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "user_id" },
-        ]
-      },
-    ]
-  });
+    );
   }
 }

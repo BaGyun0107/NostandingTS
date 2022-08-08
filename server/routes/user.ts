@@ -1,5 +1,6 @@
-const router = require('express').Router();
-const user = require('../controllers/user');
+import express from 'express';
+import user from '../controllers/user';
+const router = express.Router();
 
 /**
  * @swagger
@@ -229,4 +230,5 @@ router.post('/passwordchange', user.passwordfind.passwordchange);
  *        "500":
  *          description: Server Error
  */
-module.exports = router;
+
+export default router;

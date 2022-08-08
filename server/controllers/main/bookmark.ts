@@ -1,9 +1,10 @@
-const { sequelize } = require("../../models");
-const initModels = require("../../models/init-models");
+import { Request, Response, NextFunction } from 'express';
+const { sequelize } = require('../../models');
+const initModels = require('../../models/init-models');
 const Models = initModels(sequelize);
 
 module.exports = {
-  post: async (req, res) => {
+  post: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { shop_id, user_name } = req.params;
 
@@ -28,7 +29,7 @@ module.exports = {
             is_marked: true,
           });
 
-          res.status(200).send({ message: "즐겨찾기 추가 완료" });
+          res.status(200).send({ message: '즐겨찾기 추가 완료' });
         }
       } else {
         if (is_marked === false) {
@@ -41,10 +42,10 @@ module.exports = {
                 user_id: userInfo.dataValues.id,
                 shop_id: shop_id,
               },
-            }
+            },
           );
 
-          res.status(200).send({ message: "즐겨찾기 삭제 완료" });
+          res.status(200).send({ message: '즐겨찾기 삭제 완료' });
         } else if (is_marked === true) {
           await Models.Bookmark.update(
             {
@@ -55,15 +56,15 @@ module.exports = {
                 user_id: userInfo.dataValues.id,
                 shop_id: shop_id,
               },
-            }
+            },
           );
 
-          res.status(200).send({ message: "즐겨찾기 다시 추가" });
+          res.status(200).send({ message: '즐겨찾기 다시 추가' });
         }
       }
     } catch (err) {
       console.log(err);
-      res.status(500).send({ message: "Server Error" });
+      res.status(500).send({ message: 'Server Error' });
     }
   },
 };

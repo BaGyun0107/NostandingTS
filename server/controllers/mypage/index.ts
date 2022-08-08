@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   reservation: require('./reservation'),
   notification: require('./notification'),
   re_review: require('./re_review'),

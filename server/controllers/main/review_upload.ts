@@ -1,11 +1,14 @@
-const { sequelize } = require('../../models');
-const initModels = require('../../models/init-models');
+import { Request, Response, NextFunction } from 'express';
+import { initModels } from '../../models/init-models';
+const Sequelize = require('sequelize');
+// const { sequelize } = require('../../models');
+
 const { User } = require('../../models');
-const Models = initModels(sequelize);
+const Models = initModels(Sequelize);
 const { userAuth } = require('../../middlewares/authorized/auth');
 
 module.exports = {
-  post: async (req, res) => {
+  post: async (req: Request, res: Response, next: NextFunction) => {
     const { user_name, shop_id } = req.params;
 
     const userInfo = await User.findOne({
@@ -15,12 +18,13 @@ module.exports = {
     });
 
     try {
-      const imageArr = [];
+      const imageArr: Array<object> = [];
       // const imageArr = [];
-
-      for (let i = 0; i < req.files.length; i++) {
-        let key = req.files[i].key;
-        let location = req.files[i].location;
+      //! req.files를 any로 써야만 '개체가 'undefined'인 것 같습니다.ts()' 해결 되는 이유 찾아보기
+      const files: any = req.files;
+      for (let i = 0; i < files.length; i++) {
+        let key = files[i].key;
+        let location = files[i].location;
         imageArr.push({ key: key, location: location });
       }
       // const image = {key : req.file.key , src : req.file.location}
@@ -28,7 +32,7 @@ module.exports = {
       const reviewInfo = Models.Review.findOne({
         where: {
           user_id: userInfo.dataValues.id,
-          shop_id: shop_id,
+          shop_id: Number(shop_id),
         },
       });
 
@@ -36,7 +40,7 @@ module.exports = {
         await Models.Review.create({
           user_id: userInfo.dataValues.id,
           image_src: JSON.stringify(imageArr),
-          shop_id: shop_id,
+          shop_id: Number(shop_id),
         });
       } else {
         await Models.Review.update(

@@ -1,9 +1,12 @@
-const { sequelize } = require('../../models');
-const initModels = require('../../models/init-models');
-const Models = initModels(sequelize);
+import { Request, Response, NextFunction } from 'express';
+import { initModels } from '../../models/init-models';
+import { Sequelize } from 'sequelize';
+// const Sequelize = require('sequelize');
+
+const Models = initModels(Sequelize);
 
 module.exports = {
-  post: async (req, res) => {
+  post: async (req: Request, res: Response) => {
     try {
       const { shop_id, user_name } = req.params;
 
@@ -11,8 +14,9 @@ module.exports = {
         where: { user_name: user_name },
       });
 
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
+      console.log(userInfo);
+      delete userInfo?.password;
+      delete userInfo?.user_salt;
 
       const { score, contents } = req.body;
 
@@ -25,7 +29,7 @@ module.exports = {
       const curr = new Date();
 
       await Models.Review.create({
-        user_id: userInfo.dataValues.id,
+        user_id: userInfo?.id,
         shop_id: shop_id,
         score: score,
         contents: contents,

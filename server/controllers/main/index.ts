@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   main: require('./main'),
   review: require('./review'),
   shop: require('./shop'),

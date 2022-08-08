@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   login: require('./login'),
   logout: require('./logout'),
   signup: require('./signup'),

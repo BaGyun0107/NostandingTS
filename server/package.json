@@ -36,6 +36,7 @@
     "nodemailer": "^6.7.5",
     "nodemon": "^2.0.16",
     "request": "^2.88.2",
+    "sequelize": "^6.21.3",
     "sequelize-auto": "^0.8.8",
     "sequelize-typescript": "^2.1.3",
     "swagger-autogen": "^2.21.2",

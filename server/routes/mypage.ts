@@ -1,6 +1,7 @@
-const router = require('express').Router();
-const mypage = require('../controllers/mypage');
-const delete_review = require('../middlewares/deleteS3/delete_review');
+import express from 'express';
+import mypage from '../controllers/mypage';
+import deleteReview from '../middlewares/deleteS3/delete_review';
+const router = express.Router();
 const delete_menu = require('../middlewares/deleteS3/delete_menu');
 const upload = require('../middlewares/upload/upload');
 const uploadMenu = require('../middlewares/upload/upload_menu');
@@ -98,7 +99,7 @@ router.post(
   mypage.menu_upload.post,
 );
 
-router.delete('/review/upload/:id', delete_review.delete);
+router.delete('/review/upload/:id', deleteReview);
 router.delete('/menu/:id', delete_menu.delete);
 router.delete('/Shop/:id', delete_shop.delete);
 
@@ -1048,4 +1049,4 @@ router.delete('/Shop/:id', delete_shop.delete);
  *                    {message : "Servor Error"}
  */
 
-module.exports = router;
+export default router;

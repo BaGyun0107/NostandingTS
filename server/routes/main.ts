@@ -1,5 +1,7 @@
-const router = require('express').Router();
-const main = require('../controllers/main');
+import express from 'express';
+import main from '../controllers/main';
+
+const router = express.Router();
 const uploadReview = require('../middlewares/upload/upload_review');
 const delete_review = require('../middlewares/deleteS3/delete_review');
 
@@ -428,4 +430,4 @@ router.post('/bookmark/:shop_id/:user_name', main.bookmark.post);
  *                    {message : "Servor Error"}
  */
 
-module.exports = router;
+export default router;

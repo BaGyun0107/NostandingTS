@@ -1,9 +1,11 @@
-require('dotenv').config();
-
+import * as dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import express from 'express';
-const { swaggerUi, specs } = require('./swagger');
+// import swaggerUi from './swagger';
+// import specs from './swagger';
+
+dotenv.config();
 
 const app = express();
 
@@ -22,11 +24,17 @@ app.use(
   }),
 );
 // routers
-const mainRouter = require('./routes/main');
-const mypageRouter = require('./routes/mypage');
-const userRouter = require('./routes/user');
-const oauthRouter = require('./routes/oauth');
-const apiRouter = require('./routes/api');
+import mainRouter from './routes/main';
+import mypageRouter from './routes/mypage';
+import userRouter from './routes/user';
+import oauthRouter from './routes/oauth';
+// import apiRouter from './routes/api'
+
+// const mainRouter = require('./routes/main');
+// const mypageRouter = require('./routes/mypage');
+// const userRouter = require('./routes/user');
+// const oauthRouter = require('./routes/oauth');
+// const apiRouter = require('./routes/api');
 
 // app.use('/', apiRouter);
 app.use('/', mainRouter);
@@ -34,7 +42,7 @@ app.use('/', userRouter);
 app.use('/mypage', mypageRouter);
 app.use('/oauth', oauthRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 const PORT = process.env.HTTP_PORT || 4000;
 

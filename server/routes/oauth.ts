@@ -1,5 +1,6 @@
-const router = require('express').Router();
-const oauth = require('../controllers/oauth');
+import express from 'express';
+import oauth from '../controllers/oauth';
+const router = express.Router();
 
 /**
  * @swagger
@@ -77,4 +78,4 @@ router.post('/google', oauth.google.post);
  *                    {message : "Server Error"}
  */
 
-module.exports = router;
+export default router;
