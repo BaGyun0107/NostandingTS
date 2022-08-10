@@ -1,9 +1,11 @@
+import { Request, Response, NextFunction } from 'express';
+import { initModels } from '../../models/init-models';
+
 const { sequelize } = require('../../models');
-const initModels = require('../../models/init-models');
 const Models = initModels(sequelize);
 
 module.exports = {
-  get: async (req, res) => {
+  get: async (req: Request, res: Response) => {
     const { id } = req.params;
     const shopInfo = await Models.Shop.findAll({
       // 리뷰리뷰수, 리뷰별점
@@ -33,13 +35,6 @@ module.exports = {
             'contents',
             'createdAt',
             'updatedAt',
-          ],
-          include: [
-            {
-              model: Models.User,
-              as: 'user',
-              attributes: ['id', 'user_name'],
-            },
           ],
           include: [
             {

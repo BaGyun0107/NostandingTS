@@ -1,12 +1,13 @@
-const { QueryTypes } = require('sequelize');
+import { Request, Response, NextFunction } from 'express';
+import { QueryTypes } from 'sequelize';
 const db = require('../../models');
 
 module.exports = {
-  get: async (req, res) => {
+  get: async (req: Request, res: Response) => {
     let { text } = req.query;
 
     // req로 받는 문자 띄어쓰기 구별하기
-    text = `%${text.replace(/ /gi, '%')}%`;
+    text = `%${String(text).replace(/ /gi, '%')}%`;
 
     // DB에 저장되있는 값의 띄어쓰기 찾기
 

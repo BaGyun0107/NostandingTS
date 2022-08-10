@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-const Sequelize = require('sequelize');
 import { initModels } from '../../models/init-models';
 
-const Models = initModels(Sequelize);
+const { sequelize } = require('../../models');
+const Models = initModels(sequelize);
+
 const { Op } = require('sequelize');
 
 module.exports = {

@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { initModels } from '../../models/init-models';
-import { Sequelize } from 'sequelize';
-// const Sequelize = require('sequelize');
 
-const Models = initModels(Sequelize);
+const { sequelize } = require('../../models');
+const Models = initModels(sequelize);
 
 module.exports = {
   post: async (req: Request, res: Response) => {
     try {
-      const { shop_id, user_name } = req.params;
+      const user_name = req.params.user_name;
+      const shop_id = Number(req.params.shop_id);
 
       const userInfo = await Models.User.findOne({
         where: { user_name: user_name },
@@ -45,7 +45,7 @@ module.exports = {
 
       // 별점 모두 더하기
       for (let n = 0; n < reviewInfo.length; n++) {
-        average += reviewInfo[n].dataValues.score;
+        average += reviewInfo[n].score || 0;
       }
       // 별점 평균 구하기
       score_average = average / reviewInfo.length;
@@ -56,12 +56,12 @@ module.exports = {
         {
           total_views: reviewInfo.length,
           // 소수점 1의 자리로 자르기
-          score_average: score_average.toFixed(1),
+          score_average: Number(score_average.toFixed(1)),
         },
         { where: { id: shop_id } },
       );
 
-      await sequelize.transaction(async transaction => {
+      await sequelize.transaction(async (t: any) => {
         // 점주에게 알람 보내기
         const newReview = await Models.Review.findOne(
           //* 로그인한 고객의 id 찾기
@@ -71,16 +71,18 @@ module.exports = {
                 model: Models.Shop,
                 as: 'shop',
                 where: { id: shop_id },
-                include: {
-                  model: Models.User,
-                  as: 'user',
-                  attribute: ['id', 'shop_name'],
-                },
+                include: [
+                  {
+                    model: Models.User,
+                    as: 'user',
+                    attributes: ['id', 'shop_name'],
+                  },
+                ],
               },
             ],
             order: [['id', 'DESC']],
+            transaction: t,
           },
-          { transaction },
         );
 
         const newCurr = curr.toLocaleDateString('ko-kr');
@@ -89,16 +91,16 @@ module.exports = {
         const masterNotification = await Models.Notification.create(
           //* 고객알림
           {
-            user_id: newReview.dataValues.shop.user.id,
-            review_id: newReview.dataValues.id,
-            contents: `${userInfo.dataValues.nickname}님께서 ${newCurr} 사장님의 ${newReview.dataValues.shop.user.shop_name} 리뷰를 작성하셨습니다.
+            user_id: newReview ? newReview.shop.user.id : 'Error',
+            review_id: newReview ? newReview.id : 'Error',
+            contents: `${userInfo?.nickname}님께서 ${newCurr} 사장님의 ${newReview?.shop.user.shop_name} 리뷰를 작성하셨습니다.
 고객님의 리뷰에 답글을 작성해주세요.
 (답글 쓰기는 예약 이후 3일동안 가능합니다)`,
             read: 0,
             updated_date: updated,
             review: 1,
           },
-          { transaction },
+          { transaction: t },
         );
 
         if (!masterNotification) {

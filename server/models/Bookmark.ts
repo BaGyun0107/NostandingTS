@@ -1,11 +1,11 @@
-import * as Sequelize from 'sequelize';
+import Sequelize from 'sequelize';
 import { DataTypes, Model, Optional } from 'sequelize';
 import type { Shop, ShopId } from './Shop';
 import type { User, UserId } from './User';
 
 export interface BookmarkAttributes {
   id: number;
-  user_id: number;
+  user_id: number | undefined;
   shop_id: number;
   is_marked?: number;
 }

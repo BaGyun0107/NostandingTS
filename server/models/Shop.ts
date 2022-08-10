@@ -17,16 +17,33 @@ export interface ShopAttributes {
   x?: string;
   y?: string;
   place_url?: string;
-  total_views?: string;
-  score_average?: string;
+  total_views?: number;
+  score_average?: number;
 }
 
-export type ShopPk = "id";
+export type ShopPk = 'id';
 export type ShopId = Shop[ShopPk];
-export type ShopOptionalAttributes = "id" | "business_hour" | "image_src" | "phone_number" | "holiday" | "contents" | "x" | "y" | "place_url" | "total_views" | "score_average";
-export type ShopCreationAttributes = Optional<ShopAttributes, ShopOptionalAttributes>;
+export type ShopOptionalAttributes =
+  | 'id'
+  | 'business_hour'
+  | 'image_src'
+  | 'phone_number'
+  | 'holiday'
+  | 'contents'
+  | 'x'
+  | 'y'
+  | 'place_url'
+  | 'total_views'
+  | 'score_average';
+export type ShopCreationAttributes = Optional<
+  ShopAttributes,
+  ShopOptionalAttributes
+>;
 
-export class Shop extends Model<ShopAttributes, ShopCreationAttributes> implements ShopAttributes {
+export class Shop
+  extends Model<ShopAttributes, ShopCreationAttributes>
+  implements ShopAttributes
+{
   id!: number;
   user_id!: number;
   business_hour?: string;
@@ -37,8 +54,8 @@ export class Shop extends Model<ShopAttributes, ShopCreationAttributes> implemen
   x?: string;
   y?: string;
   place_url?: string;
-  total_views?: string;
-  score_average?: string;
+  total_views?: number;
+  score_average?: number;
 
   // Shop hasMany Bookmark via shop_id
   Bookmarks!: Bookmark[];
@@ -47,8 +64,14 @@ export class Shop extends Model<ShopAttributes, ShopCreationAttributes> implemen
   addBookmark!: Sequelize.HasManyAddAssociationMixin<Bookmark, BookmarkId>;
   addBookmarks!: Sequelize.HasManyAddAssociationsMixin<Bookmark, BookmarkId>;
   createBookmark!: Sequelize.HasManyCreateAssociationMixin<Bookmark>;
-  removeBookmark!: Sequelize.HasManyRemoveAssociationMixin<Bookmark, BookmarkId>;
-  removeBookmarks!: Sequelize.HasManyRemoveAssociationsMixin<Bookmark, BookmarkId>;
+  removeBookmark!: Sequelize.HasManyRemoveAssociationMixin<
+    Bookmark,
+    BookmarkId
+  >;
+  removeBookmarks!: Sequelize.HasManyRemoveAssociationsMixin<
+    Bookmark,
+    BookmarkId
+  >;
   hasBookmark!: Sequelize.HasManyHasAssociationMixin<Bookmark, BookmarkId>;
   hasBookmarks!: Sequelize.HasManyHasAssociationsMixin<Bookmark, BookmarkId>;
   countBookmarks!: Sequelize.HasManyCountAssociationsMixin;
@@ -71,8 +94,14 @@ export class Shop extends Model<ShopAttributes, ShopCreationAttributes> implemen
   addReReview!: Sequelize.HasManyAddAssociationMixin<ReReview, ReReviewId>;
   addReReviews!: Sequelize.HasManyAddAssociationsMixin<ReReview, ReReviewId>;
   createReReview!: Sequelize.HasManyCreateAssociationMixin<ReReview>;
-  removeReReview!: Sequelize.HasManyRemoveAssociationMixin<ReReview, ReReviewId>;
-  removeReReviews!: Sequelize.HasManyRemoveAssociationsMixin<ReReview, ReReviewId>;
+  removeReReview!: Sequelize.HasManyRemoveAssociationMixin<
+    ReReview,
+    ReReviewId
+  >;
+  removeReReviews!: Sequelize.HasManyRemoveAssociationsMixin<
+    ReReview,
+    ReReviewId
+  >;
   hasReReview!: Sequelize.HasManyHasAssociationMixin<ReReview, ReReviewId>;
   hasReReviews!: Sequelize.HasManyHasAssociationsMixin<ReReview, ReReviewId>;
   countReReviews!: Sequelize.HasManyCountAssociationsMixin;
@@ -95,82 +124,81 @@ export class Shop extends Model<ShopAttributes, ShopCreationAttributes> implemen
   createUser!: Sequelize.BelongsToCreateAssociationMixin<User>;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof Shop {
-    return Shop.init({
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'User',
-        key: 'id'
-      }
-    },
-    business_hour: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    image_src: {
-      type: DataTypes.STRING(10000),
-      allowNull: true
-    },
-    phone_number: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    holiday: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    contents: {
-      type: DataTypes.STRING(200),
-      allowNull: true
-    },
-    x: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    y: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    place_url: {
-      type: DataTypes.STRING(200),
-      allowNull: true
-    },
-    total_views: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    score_average: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    }
-  }, {
-    sequelize,
-    tableName: 'Shop',
-    timestamps: false,
-    indexes: [
+    return Shop.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          autoIncrement: true,
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        user_id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+        },
+        business_hour: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        image_src: {
+          type: DataTypes.STRING(10000),
+          allowNull: true,
+        },
+        phone_number: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        holiday: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        contents: {
+          type: DataTypes.STRING(200),
+          allowNull: true,
+        },
+        x: {
+          type: DataTypes.STRING(100),
+          allowNull: true,
+        },
+        y: {
+          type: DataTypes.STRING(100),
+          allowNull: true,
+        },
+        place_url: {
+          type: DataTypes.STRING(200),
+          allowNull: true,
+        },
+        total_views: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        score_average: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
       },
       {
-        name: "fk_Shop_User1_idx",
-        using: "BTREE",
-        fields: [
-          { name: "user_id" },
-        ]
+        sequelize,
+        tableName: 'Shop',
+        timestamps: false,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+          {
+            name: 'fk_Shop_User1_idx',
+            using: 'BTREE',
+            fields: [{ name: 'user_id' }],
+          },
+        ],
       },
-    ]
-  });
+    );
   }
 }

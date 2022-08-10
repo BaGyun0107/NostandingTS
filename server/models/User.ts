@@ -22,16 +22,39 @@ export interface UserAttributes {
   email?: string;
   is_master?: number;
   email_key?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-export type UserPk = "id";
+export type UserPk = 'id';
 export type UserId = User[UserPk];
-export type UserOptionalAttributes = "id" | "user_salt" | "user_name" | "password" | "nickname" | "phone_number" | "shop_name" | "shop_category" | "shop_category_city" | "address_line1" | "address_line2" | "postal_code" | "email" | "is_master" | "email_key" | "createdAt" | "updatedAt";
-export type UserCreationAttributes = Optional<UserAttributes, UserOptionalAttributes>;
+export type UserOptionalAttributes =
+  | 'id'
+  | 'user_salt'
+  | 'user_name'
+  | 'password'
+  | 'nickname'
+  | 'phone_number'
+  | 'shop_name'
+  | 'shop_category'
+  | 'shop_category_city'
+  | 'address_line1'
+  | 'address_line2'
+  | 'postal_code'
+  | 'email'
+  | 'is_master'
+  | 'email_key'
+  | 'createdAt'
+  | 'updatedAt';
+export type UserCreationAttributes = Optional<
+  UserAttributes,
+  UserOptionalAttributes
+>;
 
-export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
+export class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements UserAttributes
+{
   id!: number;
   user_salt?: string;
   user_name?: string;
@@ -47,8 +70,8 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   email?: string;
   is_master?: number;
   email_key?: string;
-  createdAt!: Date;
-  updatedAt!: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   // User hasMany Bookmark via user_id
   Bookmarks!: Bookmark[];
@@ -57,34 +80,82 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   addBookmark!: Sequelize.HasManyAddAssociationMixin<Bookmark, BookmarkId>;
   addBookmarks!: Sequelize.HasManyAddAssociationsMixin<Bookmark, BookmarkId>;
   createBookmark!: Sequelize.HasManyCreateAssociationMixin<Bookmark>;
-  removeBookmark!: Sequelize.HasManyRemoveAssociationMixin<Bookmark, BookmarkId>;
-  removeBookmarks!: Sequelize.HasManyRemoveAssociationsMixin<Bookmark, BookmarkId>;
+  removeBookmark!: Sequelize.HasManyRemoveAssociationMixin<
+    Bookmark,
+    BookmarkId
+  >;
+  removeBookmarks!: Sequelize.HasManyRemoveAssociationsMixin<
+    Bookmark,
+    BookmarkId
+  >;
   hasBookmark!: Sequelize.HasManyHasAssociationMixin<Bookmark, BookmarkId>;
   hasBookmarks!: Sequelize.HasManyHasAssociationsMixin<Bookmark, BookmarkId>;
   countBookmarks!: Sequelize.HasManyCountAssociationsMixin;
   // User hasMany Notification via user_id
   Notifications!: Notification[];
   getNotifications!: Sequelize.HasManyGetAssociationsMixin<Notification>;
-  setNotifications!: Sequelize.HasManySetAssociationsMixin<Notification, NotificationId>;
-  addNotification!: Sequelize.HasManyAddAssociationMixin<Notification, NotificationId>;
-  addNotifications!: Sequelize.HasManyAddAssociationsMixin<Notification, NotificationId>;
+  setNotifications!: Sequelize.HasManySetAssociationsMixin<
+    Notification,
+    NotificationId
+  >;
+  addNotification!: Sequelize.HasManyAddAssociationMixin<
+    Notification,
+    NotificationId
+  >;
+  addNotifications!: Sequelize.HasManyAddAssociationsMixin<
+    Notification,
+    NotificationId
+  >;
   createNotification!: Sequelize.HasManyCreateAssociationMixin<Notification>;
-  removeNotification!: Sequelize.HasManyRemoveAssociationMixin<Notification, NotificationId>;
-  removeNotifications!: Sequelize.HasManyRemoveAssociationsMixin<Notification, NotificationId>;
-  hasNotification!: Sequelize.HasManyHasAssociationMixin<Notification, NotificationId>;
-  hasNotifications!: Sequelize.HasManyHasAssociationsMixin<Notification, NotificationId>;
+  removeNotification!: Sequelize.HasManyRemoveAssociationMixin<
+    Notification,
+    NotificationId
+  >;
+  removeNotifications!: Sequelize.HasManyRemoveAssociationsMixin<
+    Notification,
+    NotificationId
+  >;
+  hasNotification!: Sequelize.HasManyHasAssociationMixin<
+    Notification,
+    NotificationId
+  >;
+  hasNotifications!: Sequelize.HasManyHasAssociationsMixin<
+    Notification,
+    NotificationId
+  >;
   countNotifications!: Sequelize.HasManyCountAssociationsMixin;
   // User hasMany Reservation via user_id
   Reservations!: Reservation[];
   getReservations!: Sequelize.HasManyGetAssociationsMixin<Reservation>;
-  setReservations!: Sequelize.HasManySetAssociationsMixin<Reservation, ReservationId>;
-  addReservation!: Sequelize.HasManyAddAssociationMixin<Reservation, ReservationId>;
-  addReservations!: Sequelize.HasManyAddAssociationsMixin<Reservation, ReservationId>;
+  setReservations!: Sequelize.HasManySetAssociationsMixin<
+    Reservation,
+    ReservationId
+  >;
+  addReservation!: Sequelize.HasManyAddAssociationMixin<
+    Reservation,
+    ReservationId
+  >;
+  addReservations!: Sequelize.HasManyAddAssociationsMixin<
+    Reservation,
+    ReservationId
+  >;
   createReservation!: Sequelize.HasManyCreateAssociationMixin<Reservation>;
-  removeReservation!: Sequelize.HasManyRemoveAssociationMixin<Reservation, ReservationId>;
-  removeReservations!: Sequelize.HasManyRemoveAssociationsMixin<Reservation, ReservationId>;
-  hasReservation!: Sequelize.HasManyHasAssociationMixin<Reservation, ReservationId>;
-  hasReservations!: Sequelize.HasManyHasAssociationsMixin<Reservation, ReservationId>;
+  removeReservation!: Sequelize.HasManyRemoveAssociationMixin<
+    Reservation,
+    ReservationId
+  >;
+  removeReservations!: Sequelize.HasManyRemoveAssociationsMixin<
+    Reservation,
+    ReservationId
+  >;
+  hasReservation!: Sequelize.HasManyHasAssociationMixin<
+    Reservation,
+    ReservationId
+  >;
+  hasReservations!: Sequelize.HasManyHasAssociationsMixin<
+    Reservation,
+    ReservationId
+  >;
   countReservations!: Sequelize.HasManyCountAssociationsMixin;
   // User hasMany Review via user_id
   Reviews!: Review[];
@@ -112,83 +183,84 @@ export class User extends Model<UserAttributes, UserCreationAttributes> implemen
   countShops!: Sequelize.HasManyCountAssociationsMixin;
 
   static initModel(sequelize: Sequelize.Sequelize): typeof User {
-    return User.init({
-    id: {
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true
-    },
-    user_salt: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    user_name: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    password: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    nickname: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    phone_number: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    shop_name: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    shop_category: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    shop_category_city: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    address_line1: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    address_line2: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    postal_code: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    email: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    },
-    is_master: {
-      type: DataTypes.TINYINT,
-      allowNull: true
-    },
-    email_key: {
-      type: DataTypes.STRING(45),
-      allowNull: true
-    }
-  }, {
-    sequelize,
-    tableName: 'User',
-    timestamps: true,
-    indexes: [
+    return User.init(
       {
-        name: "PRIMARY",
-        unique: true,
-        using: "BTREE",
-        fields: [
-          { name: "id" },
-        ]
+        id: {
+          autoIncrement: true,
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          primaryKey: true,
+        },
+        user_salt: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        user_name: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        password: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+        },
+        nickname: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        phone_number: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        shop_name: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        shop_category: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        shop_category_city: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        address_line1: {
+          type: DataTypes.STRING(100),
+          allowNull: true,
+        },
+        address_line2: {
+          type: DataTypes.STRING(100),
+          allowNull: true,
+        },
+        postal_code: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        email: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
+        is_master: {
+          type: DataTypes.TINYINT,
+          allowNull: true,
+        },
+        email_key: {
+          type: DataTypes.STRING(45),
+          allowNull: true,
+        },
       },
-    ]
-  });
+      {
+        sequelize,
+        tableName: 'User',
+        timestamps: true,
+        indexes: [
+          {
+            name: 'PRIMARY',
+            unique: true,
+            using: 'BTREE',
+            fields: [{ name: 'id' }],
+          },
+        ],
+      },
+    );
   }
 }

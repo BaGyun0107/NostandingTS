@@ -25,9 +25,9 @@ app.use(
 );
 // routers
 import mainRouter from './routes/main';
-import mypageRouter from './routes/mypage';
-import userRouter from './routes/user';
-import oauthRouter from './routes/oauth';
+// import mypageRouter from './routes/mypage';
+// import userRouter from './routes/user';
+// import oauthRouter from './routes/oauth';
 // import apiRouter from './routes/api'
 
 // const mainRouter = require('./routes/main');
@@ -38,9 +38,9 @@ import oauthRouter from './routes/oauth';
 
 // app.use('/', apiRouter);
 app.use('/', mainRouter);
-app.use('/', userRouter);
-app.use('/mypage', mypageRouter);
-app.use('/oauth', oauthRouter);
+// app.use('/', userRouter);
+// app.use('/mypage', mypageRouter);
+// app.use('/oauth', oauthRouter);
 
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 

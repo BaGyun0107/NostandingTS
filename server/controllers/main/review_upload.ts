@@ -1,17 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
 import { initModels } from '../../models/init-models';
-const Sequelize = require('sequelize');
-// const { sequelize } = require('../../models');
 
-const { User } = require('../../models');
-const Models = initModels(Sequelize);
+const { sequelize } = require('../../models');
+const Models = initModels(sequelize);
+
 const { userAuth } = require('../../middlewares/authorized/auth');
 
 module.exports = {
   post: async (req: Request, res: Response, next: NextFunction) => {
     const { user_name, shop_id } = req.params;
 
-    const userInfo = await User.findOne({
+    const userInfo = await Models.User.findOne({
       where: {
         user_name: user_name,
       },
@@ -31,14 +30,14 @@ module.exports = {
 
       const reviewInfo = Models.Review.findOne({
         where: {
-          user_id: userInfo.dataValues.id,
+          user_id: userInfo?.id,
           shop_id: Number(shop_id),
         },
       });
 
       if (!reviewInfo) {
         await Models.Review.create({
-          user_id: userInfo.dataValues.id,
+          user_id: userInfo?.id,
           image_src: JSON.stringify(imageArr),
           shop_id: Number(shop_id),
         });
@@ -49,7 +48,7 @@ module.exports = {
           },
           {
             where: {
-              user_id: userInfo.dataValues.id,
+              user_id: userInfo?.id,
               shop_id: shop_id,
             },
           },
@@ -62,7 +61,7 @@ module.exports = {
     }
   },
 
-  delete: async (req, res) => {
+  delete: async (req: Request, res: Response) => {
     try {
       const userInfo = await userAuth(req, res);
       if (!userInfo) {

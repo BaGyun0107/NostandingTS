@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { initModels } from '../../models/init-models';
-const Sequelize = require('sequelize');
-// const { sequelize } = require('../../models');
-const Models = initModels(Sequelize);
+
+const { sequelize } = require('../../models');
+const Models = initModels(sequelize);
 
 require('dotenv').config();
 
@@ -56,7 +56,7 @@ module.exports = {
         attributes: ['image_src', 'id', 'total_views', 'score_average'],
         order: [['score_average', 'DESC']],
       });
-
+      console.log(mainInfo);
       const arrInfo: Array<object> = [];
       mainInfo.map(el => {
         arrInfo.push({
@@ -72,7 +72,7 @@ module.exports = {
           score_average: el.score_average,
         });
       });
-
+      console.log(arrInfo);
       return res
         .status(200)
         .send({ data: arrInfo, message: '별점 재정렬 전달 완료' });

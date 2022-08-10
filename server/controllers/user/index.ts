@@ -1,7 +1,7 @@
-export default {
-  login: require('./login'),
-  logout: require('./logout'),
-  signup: require('./signup'),
-  passwordfind: require('./passwordfind'),
-  emailcheck: require('./emailcheck'),
-};
+// export default {
+//   login: require('./login'),
+//   logout: require('./logout'),
+//   signup: require('./signup'),
+//   passwordfind: require('./passwordfind'),
+//   emailcheck: require('./emailcheck'),
+// };
