@@ -8,8 +8,8 @@ import { initModels } from '../../models/init-models';
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
-export default {
-  bookmarkPost: async (req: Request, res: Response, next: NextFunction) => {
+module.exports = {
+  post: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user_name = req.params.user_name;
       const shop_id = Number(req.params.shop_id);

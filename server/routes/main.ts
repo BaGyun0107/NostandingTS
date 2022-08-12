@@ -1,10 +1,9 @@
 import express from 'express';
-import main from '../controllers/main';
-// import deleteReview from '../middlewares/deleteS3/delete_review';
 
 const router = express.Router();
 const uploadReview = require('../middlewares/upload/upload_review');
-// const delete_review = require('../middlewares/deleteS3/delete_review');
+const delete_review = require('../middlewares/deleteS3/delete_review');
+const main = require('../controllers/main');
 
 /**
  * @swagger
@@ -32,14 +31,14 @@ router.get('/shop/:id', main.shop.get);
 router.get('/category', main.category.get);
 router.get('/search', main.search.get);
 router.post('/review/:user_name/:shop_id', main.review.post);
-router.delete('/review/id/:review_id', main.review_upload.delete);
-// router.delete('/review/:id', deleteReview);
+// router.delete('/review/id/:review_id', main.review_upload.delete);
+// router.delete('/review/:id', delete_review.delete);
 // router.post(
 //   '/review/upload/:user_name/:shop_id',
 //   uploadReview.array('file', 4),
 //   main.review_upload.post,
 // );
-router.post('/bookmark/:shop_id/:user_name', main.bookmark);
+router.post('/bookmark/:shop_id/:user_name', main.bookmark.post);
 
 /**
  * @swagger
