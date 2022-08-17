@@ -7,7 +7,7 @@ const Models = initModels(sequelize);
 const { Op } = require('sequelize');
 
 module.exports = {
-  get: async (req: Request, res: Response) => {
+  get: async (req: Request, res: Response, next: NextFunction) => {
     // 가게 이름 , 주소 ,
     const { order } = req.query;
 
@@ -50,25 +50,25 @@ module.exports = {
           order: [['score_average', 'DESC']],
         });
 
-        const arrInfo: Array<object> = [];
-        shopInfo.map(el => {
-          arrInfo.push({
-            image_src: el.image_src,
-            id: el.id,
-            shop_category: el.user.shop_category,
-            shop_category_city: el.user.shop_category_city,
-            shop_name: el.user.shop_name,
-            address_line1: el.user.address_line1,
-            address_line2: el.user.address_line2,
-            // is_marked: el.Bookmarks.is_marked,
-            total_views: el.total_views,
-            score_average: el.score_average,
-          });
-        });
+        // const arrInfo: Array<object> = [];
+        // shopInfo.map(el => {
+        //   arrInfo.push({
+        //     image_src: el.image_src,
+        //     id: el.id,
+        //     shop_category: el.user.shop_category,
+        //     shop_category_city: el.user.shop_category_city,
+        //     shop_name: el.user.shop_name,
+        //     address_line1: el.user.address_line1,
+        //     address_line2: el.user.address_line2,
+        //     is_marked: el.Bookmarks.is_marked,
+        //     total_views: el.total_views,
+        //     score_average: el.score_average,
+        //   });
+        // });
 
         return res
           .status(200)
-          .send({ data: arrInfo, message: '정보 전달 완료' });
+          .send({ data: shopInfo, message: '정보 전달 완료' });
       } else if (order === 'view') {
         const { shop_category, shop_category_city } = req.query;
         const shopInfo = await Models.Shop.findAll({
@@ -107,25 +107,25 @@ module.exports = {
           order: [['total_views', 'DESC']],
         });
 
-        const arrInfo: Array<object> = [];
-        shopInfo.map(el => {
-          arrInfo.push({
-            image_src: el.image_src,
-            id: el.id,
-            shop_category: el.user.shop_category,
-            shop_category_city: el.user.shop_category_city,
-            shop_name: el.user.shop_name,
-            address_line1: el.user.address_line1,
-            address_line2: el.user.address_line2,
-            // is_marked: el.Bookmarks.is_marked,
-            total_views: el.total_views,
-            score_average: el.score_average,
-          });
-        });
+        // const arrInfo: Array<object> = [];
+        // shopInfo.map(el => {
+        //   arrInfo.push({
+        //     image_src: el.image_src,
+        //     id: el.id,
+        //     shop_category: el.user.shop_category,
+        //     shop_category_city: el.user.shop_category_city,
+        //     shop_name: el.user.shop_name,
+        //     address_line1: el.user.address_line1,
+        //     address_line2: el.user.address_line2,
+        //     // is_marked: el.Bookmarks.is_marked,
+        //     total_views: el.total_views,
+        //     score_average: el.score_average,
+        //   });
+        // });
 
         return res
           .status(200)
-          .send({ data: arrInfo, message: '정보 전달 완료' });
+          .send({ data: shopInfo, message: '정보 전달 완료' });
       } else {
         const { shop_category, shop_category_city } = req.query;
         const shopInfo = await Models.Shop.findAll({
@@ -164,25 +164,25 @@ module.exports = {
           order: [[{ model: Models.User, as: 'user' }, 'shop_name', 'ASC']],
         });
 
-        const arrInfo: Array<object> = [];
-        shopInfo.map(el => {
-          arrInfo.push({
-            image_src: el.image_src,
-            id: el.id,
-            shop_category: el.user.shop_category,
-            shop_category_city: el.user.shop_category_city,
-            shop_name: el.user.shop_name,
-            address_line1: el.user.address_line1,
-            address_line2: el.user.address_line2,
-            // is_marked: el.Bookmarks.is_marked,
-            total_views: el.total_views,
-            score_average: el.score_average,
-          });
-        });
+        // const arrInfo: Array<object> = [];
+        // shopInfo.map(el => {
+        //   arrInfo.push({
+        //     image_src: el.image_src,
+        //     id: el.id,
+        //     shop_category: el.user.shop_category,
+        //     shop_category_city: el.user.shop_category_city,
+        //     shop_name: el.user.shop_name,
+        //     address_line1: el.user.address_line1,
+        //     address_line2: el.user.address_line2,
+        //     // is_marked: el.Bookmarks.is_marked,
+        //     total_views: el.total_views,
+        //     score_average: el.score_average,
+        //   });
+        // });
 
         return res
           .status(200)
-          .send({ data: arrInfo, message: '정보 전달 완료' });
+          .send({ data: shopInfo, message: '정보 전달 완료' });
       }
     } catch (err) {
       return res.status(500).send({ message: 'Server Error' });

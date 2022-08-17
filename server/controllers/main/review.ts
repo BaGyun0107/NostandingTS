@@ -5,7 +5,7 @@ const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
 module.exports = {
-  post: async (req: Request, res: Response) => {
+  post: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user_name = req.params.user_name;
       const shop_id = Number(req.params.shop_id);
@@ -61,7 +61,7 @@ module.exports = {
         { where: { id: shop_id } },
       );
 
-      await sequelize.transaction(async (t: any) => {
+      await sequelize.transaction(async t => {
         // 점주에게 알람 보내기
         const newReview = await Models.Review.findOne(
           //* 로그인한 고객의 id 찾기
@@ -88,24 +88,26 @@ module.exports = {
         const newCurr = curr.toLocaleDateString('ko-kr');
         const updated = curr.setDate(curr.getDate() + 4);
 
-        const masterNotification = await Models.Notification.create(
-          //* 고객알림
-          {
-            user_id: newReview ? newReview.shop.user.id : 'Error',
-            review_id: newReview ? newReview.id : 'Error',
-            contents: `${userInfo?.nickname}님께서 ${newCurr} 사장님의 ${newReview?.shop.user.shop_name} 리뷰를 작성하셨습니다.
-고객님의 리뷰에 답글을 작성해주세요.
-(답글 쓰기는 예약 이후 3일동안 가능합니다)`,
-            read: 0,
-            updated_date: updated,
-            review: 1,
-          },
-          { transaction: t },
-        );
+        if (newReview) {
+          const masterNotification = await Models.Notification.create(
+            //* 고객알림
+            {
+              user_id: newReview.shop.user.id,
+              review_id: newReview.id,
+              contents: `${userInfo?.nickname}님께서 ${newCurr} 사장님의 ${newReview?.shop.user.shop_name} 리뷰를 작성하셨습니다.
+  고객님의 리뷰에 답글을 작성해주세요.
+  (답글 쓰기는 예약 이후 3일동안 가능합니다)`,
+              read: 0,
+              updated_date: updated,
+              review: 1,
+            },
+            { transaction: t },
+          );
 
-        if (!masterNotification) {
-          //* 유저 알림이 생성되지 않았다면 오류 메세지
-          throw new Error('masterNotification 생성 오류');
+          if (!masterNotification) {
+            //* 유저 알림이 생성되지 않았다면 오류 메세지
+            throw new Error('masterNotification 생성 오류');
+          }
         }
       });
       res.status(200).send({ message: '리뷰 작성 완료' });

@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { QueryTypes } from 'sequelize';
+
 const db = require('../../models');
 
 module.exports = {
-  get: async (req: Request, res: Response) => {
+  get: async (req: Request, res: Response, next: NextFunction) => {
     let { text } = req.query;
 
     // req로 받는 문자 띄어쓰기 구별하기

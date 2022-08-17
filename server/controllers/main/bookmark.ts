@@ -65,7 +65,7 @@ module.exports = {
             },
           );
 
-          res.status(200).send({ message: '즐겨찾기 다시 추가' });
+          res.status(200).send({ message: '즐겨찾기 추가 완료' });
         }
       }
     } catch (err) {

@@ -7,9 +7,9 @@ import type { User, UserId } from './User';
 
 export interface NotificationAttributes {
   id: number;
-  user_id: number | string;
+  user_id: number;
   reservation_id?: number;
-  review_id?: number | string;
+  review_id?: number;
   rereview_id?: number;
   contents?: string;
   read?: number;
