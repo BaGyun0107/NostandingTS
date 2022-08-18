@@ -1,8 +1,8 @@
 ## **현재까지의 문제점**
 
--   ~multerS3에서 **'S3' 형식은 'S3Client' 형식에 할당할 수 없습니다.ts(2322)** 에러가~ ~발생한다.~
-    -  tsconfig.json에 "module": "ESNext" 를  "module":"CommonsJS" 로 변경하여 require 구문을 이용해 불러와서 사용으로 오류를 해결해둠.
--   ~현재 Bookmark 테이블의 **'Bookmark\[\]' 형식에 'is\_marked' 속성이 없습니다.ts(2339)**~ ~에러가 발생한다.~  
+-   ~multerS3에서 **'S3' 형식은 'S3Client' 형식에 할당할 수 없습니다.ts(2322)** 에러가~ ~발생한다.~ `해결`
+    -  tsconfig.json에 "module": "ESNext" 를  "module":"CommonsJS" 로 변경하여 require 구문을 이용해 불러와서 사용으로 오류를 해결해둠.
+-   ~현재 Bookmark 테이블의 **'Bookmark\[\]' 형식에 'is\_marked' 속성이 없습니다.ts(2339)**~ ~에러가 발생한다.~ `해결`
     - 데이터를 깔끔하게 보내고싶어서 사용했던 .map 함수를 제거 후, findOne 으로 데이터를 보내주는 방식으로 변경
 -   mysql 데이터를 가지고오기 위한 index.js 파일을 .ts 로 변경시 **'Error: No Sequelize instance passed'** 문제 발생  
     - .js파일인 상태로 유지
