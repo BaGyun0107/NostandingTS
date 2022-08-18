@@ -1,8 +1,8 @@
 // import { DataTypes, Sequelize } from 'sequelize';
 // import fs from 'fs';
 // import path from 'path';
-// import config from '../config/config';
 
+// const config = require('../config/config');
 // const data = require('sequelize');
 
 // // const fs = require('fs');
@@ -32,7 +32,6 @@
 //   })
 //   .forEach(file => {
 //     const model = require(path.join(__dirname, file))(sequelize, data.dataType);
-//     console.log(mp);
 //     db[model.name] = model;
 //     console.log(model);
 //   });
@@ -87,12 +86,12 @@
 // db.sequelize = sequelize;
 // db.Sequelize = Sequelize;
 
-// export default db;
+// module.exports = db;
 
 // import { initModels } from './init-models';
 // import { Sequelize } from 'sequelize';
-// import { config } from '../config/config';
 
+// const config = require('../config/config');
 // const env = 'development';
 // const sequelizeConfig: any = config[env];
 

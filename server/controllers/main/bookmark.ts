@@ -1,9 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { initModels } from '../../models/init-models';
-// import { Sequelize } from 'sequelize';
-
-// const sequelize: Sequelize = require('sequelize');
-// const Models = initModels(sequelize);
 
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
@@ -35,24 +31,10 @@ module.exports = {
             is_marked: 1,
           });
 
-          res.status(200).send({ message: '즐겨찾기 추가 완료' });
+          return res.status(200).send({ message: '즐겨찾기 추가 완료' });
         }
       } else {
         if (is_marked === 0) {
-          await Models.Bookmark.update(
-            {
-              is_marked: 0,
-            },
-            {
-              where: {
-                user_id: userInfo?.id,
-                shop_id: shop_id,
-              },
-            },
-          );
-
-          res.status(200).send({ message: '즐겨찾기 삭제 완료' });
-        } else if (is_marked === 1) {
           await Models.Bookmark.update(
             {
               is_marked: 1,
@@ -65,7 +47,21 @@ module.exports = {
             },
           );
 
-          res.status(200).send({ message: '즐겨찾기 추가 완료' });
+          return res.status(200).send({ message: '즐겨찾기 삭제 완료' });
+        } else if (is_marked === 1) {
+          await Models.Bookmark.update(
+            {
+              is_marked: 0,
+            },
+            {
+              where: {
+                user_id: userInfo?.id,
+                shop_id: shop_id,
+              },
+            },
+          );
+
+          return res.status(200).send({ message: '즐겨찾기 추가 완료' });
         }
       }
     } catch (err) {

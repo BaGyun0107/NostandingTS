@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import aws from 'aws-sdk';
 import * as dotenv from 'dotenv';
 import { env } from 'process';
-
 dotenv.config();
 
 aws.config.update({
@@ -10,27 +9,29 @@ aws.config.update({
   secretAccessKey: env.S3_SECRET_ACCESS_KEY,
   region: 'ap-northeast-2',
 });
+// s3 버킷 연결하기
 
 const s3 = new aws.S3();
 
 module.exports = {
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // 삭제 메소드활용(버킷에 주어진 key값을 활용하여 삭제)
       await s3.deleteObject(
         {
           Bucket: 'semicolon-nostanding.com',
-          Key: `review/${req.params.id}`,
+          Key: `menu/${req.params.id}`,
         },
         (err, data) => {
           if (err) throw err;
         },
       );
 
-      res.send({
-        message: 'S3 삭제 완료',
+      res.json({
+        message: 'success',
       });
     } catch (err) {
-      res.send({ message: '삭제 실패' });
+      next(err);
     }
   },
 };

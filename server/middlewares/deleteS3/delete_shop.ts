@@ -19,18 +19,18 @@ module.exports = {
       await s3.deleteObject(
         {
           Bucket: 'semicolon-nostanding.com',
-          Key: `review/${req.params.id}`,
+          Key: `Shop/${req.params.id}`,
         },
         (err, data) => {
           if (err) throw err;
         },
       );
 
-      res.send({
-        message: 'S3 삭제 완료',
+      res.json({
+        message: 'success',
       });
     } catch (err) {
-      res.send({ message: '삭제 실패' });
+      next(err);
     }
   },
 };

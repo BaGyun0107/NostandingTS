@@ -4,7 +4,7 @@ import { initModels } from '../../models/init-models';
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
-const { Op } = require('sequelize');
+const Op = require('sequelize');
 
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
@@ -21,10 +21,10 @@ module.exports = {
               as: 'user',
               where: {
                 [Op.and]: [
-                  shop_category ? { shop_category: shop_category } : null,
+                  shop_category ? { shop_category: shop_category } : undefined,
                   shop_category_city
                     ? { shop_category_city: shop_category_city }
-                    : null,
+                    : undefined,
                 ],
               },
               attributes: [
@@ -78,10 +78,10 @@ module.exports = {
               as: 'user',
               where: {
                 [Op.and]: [
-                  shop_category ? { shop_category: shop_category } : null,
+                  shop_category ? { shop_category: shop_category } : undefined,
                   shop_category_city
                     ? { shop_category_city: shop_category_city }
-                    : null,
+                    : undefined,
                 ],
               },
               attributes: [
@@ -135,10 +135,10 @@ module.exports = {
               as: 'user',
               where: {
                 [Op.and]: [
-                  shop_category ? { shop_category: shop_category } : null,
+                  shop_category ? { shop_category: shop_category } : undefined,
                   shop_category_city
                     ? { shop_category_city: shop_category_city }
-                    : null,
+                    : undefined,
                 ],
               },
               attributes: [

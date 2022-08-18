@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
+import { initModels } from '../../models/init-models';
+
 const { sequelize } = require('../../models');
-const initModels = require('../../models/init-models');
 const Models = initModels(sequelize);
 const axios = require('axios');
 

@@ -1,4 +1,4 @@
-// export default {
-//   kakao: require('./kakao'),
-//   google: require('./google'),
-// };
+module.exports = {
+  kakao: require('./kakao'),
+  google: require('./google'),
+};

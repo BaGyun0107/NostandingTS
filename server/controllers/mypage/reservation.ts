@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { initModels } from '../../models/init-models';
 import schedule from 'node-schedule';
-import { QueryTypes } from 'sequelize';
+import { QueryTypes, Op } from 'sequelize';
 
 const db = require('../../models');
 const { userAuth } = require('../../middlewares/authorized/auth');
@@ -9,19 +9,17 @@ const { userAuth } = require('../../middlewares/authorized/auth');
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
-const Op = sequelize.Op;
-
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     const userInfo = await userAuth(req, res);
     if (!userInfo) {
       return res.status(400).json({ message: '유저정보 없음' });
     }
-    delete userInfo.dataValues.password;
-    delete userInfo.dataValues.user_salt;
+    // delete userInfo?.password;
+    // delete userInfo?.user_salt;
 
     // reservation - menu - shop
-    if (userInfo.dataValues.is_master === 0) {
+    if (userInfo?.is_master === 0) {
       const query = `SELECT R.id, R.user_id, U.shop_name, U.address_line1, M.name, R.date, S.id as shop_id, S.image_src from Reservation R
       Join Menu M ON M.id = R.menu_id
       Join Shop S ON S.id = M.shop_id
@@ -45,7 +43,7 @@ module.exports = {
 
       Join Shop S On M.shop_id = S.id
       Join User U On S.user_id = U.id
-      where U.id = ${userInfo.dataValues.id}
+      where U.id = ${userInfo?.id}
       ORDER BY R.date DESC`;
 
       const reservationlist2 = await db.sequelize.query(query2, {
@@ -68,14 +66,14 @@ module.exports = {
       if (!userInfo) {
         return res.status(400).json({ message: '유저정보 없음' });
       }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
+      delete userInfo?.password;
+      delete userInfo?.user_salt;
 
       const { menu_id, date, shop_name } = req.body;
 
       const reservationPrev = await Models.Reservation.findOne({
         where: {
-          user_id: userInfo.dataValues.id,
+          user_id: userInfo?.id,
           menu_id: menu_id,
           date: date,
         },
@@ -83,7 +81,7 @@ module.exports = {
 
       if (!reservationPrev) {
         await Models.Reservation.create({
-          user_id: userInfo.dataValues.id,
+          user_id: userInfo?.id,
           menu_id: menu_id,
           date: date,
         });
@@ -91,7 +89,7 @@ module.exports = {
         const newReservation = await Models.Reservation.findOne(
           //* 로그인한 고객의 id 찾기
           {
-            where: { user_id: userInfo.dataValues.id },
+            where: { user_id: userInfo?.id },
             order: [['id', 'DESC']],
           },
         );
@@ -100,7 +98,7 @@ module.exports = {
           const newReservation = await Models.Reservation.findOne(
             //* 로그인한 고객의 id 찾기
             {
-              where: { user_id: userInfo.dataValues.id },
+              where: { user_id: userInfo?.id },
               order: [['id', 'DESC']],
               transaction: t,
             },
@@ -168,8 +166,8 @@ module.exports = {
           //* 로그인한 고객의 id 찾기
           {
             where: {
-              user_id: userInfo.dataValues.id,
-              [Op.not]: [{ created_date: null }],
+              user_id: userInfo?.id,
+              [Op.not]: [{ created_date: undefined }],
             },
             order: [['id', 'DESC']],
           },
@@ -213,8 +211,8 @@ module.exports = {
       if (!userInfo) {
         return res.status(400).json({ message: '유저정보 없음' });
       }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
+      delete userInfo?.password;
+      delete userInfo?.user_salt;
 
       const { id } = req.params;
 

@@ -2,13 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import { initModels } from '../../models/init-models';
 import axios from 'axios';
 import schedule from 'node-schedule';
+import { Op } from 'sequelize';
 
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
 const { userAuth } = require('../../middlewares/authorized/auth');
-
-const Op = sequelize.Op;
 
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
@@ -17,8 +16,8 @@ module.exports = {
       if (!userInfo) {
         return res.status(400).json({ message: '유저정보 없음' });
       }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
+      delete userInfo?.password;
+      delete userInfo?.user_salt;
 
       const { user_name } = req.params;
 
@@ -56,15 +55,17 @@ module.exports = {
         order: [['id', 'DESC']],
         where: { user_id: userInfo.dataValues.id },
       });
+
       if (notificationInfo) {
         return res.status(200).send({
           data: notificationInfo,
           message: '알림 정보 전달 완료',
         });
+      } else {
+        return res.status(201).send({ message: '삭제된 알림 입니다.' });
       }
-      res.status(201).send({ message: '삭제된 알림 입니다.' });
     } catch (err) {
-      res.status(500).send({ message: 'Server Error' });
+      return res.status(500).send({ message: 'Server Error' });
     }
   },
   patch: async (req, res) => {

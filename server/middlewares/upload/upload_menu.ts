@@ -9,16 +9,17 @@ aws.config.update({
   secretAccessKey: env.S3_SECRET_ACCESS_KEY,
   region: 'ap-northeast-2',
 });
+
 const s3 = new aws.S3();
-let uploadReview = multer({
+let uploadMenu = multer({
   storage: multerS3({
     s3: s3,
     bucket: 'semicolon-nostanding.com',
     acl: 'public-read-write',
     key: (req, file, callback) => {
-      callback(null, `review/${Date.now()}_${file.originalname}`);
+      callback(null, `menu/${Date.now()}_${file.originalname}`);
     },
   }),
 });
 
-module.exports = uploadReview;
+module.exports = uploadMenu;

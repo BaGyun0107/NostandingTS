@@ -88,9 +88,10 @@ const Box = styled.div`
 `;
 const ShopInfoCon = styled.div`
   display: flex;
-  border-bottom: ${(props)=> props.lineOn?'1px solid rgba(85, 85, 85, 0.3)':null };
+  border-bottom: ${(props) =>
+    props.lineOn ? "1px solid rgba(85, 85, 85, 0.3)" : null};
   flex-direction: row;
-  margin-bottom: ${(props)=> props.lineOn? '50px' : '15px'};
+  margin-bottom: ${(props) => (props.lineOn ? "50px" : "15px")};
   svg {
     margin-right: 10px;
   }
@@ -123,18 +124,18 @@ const TitleDiv = styled.div`
   font-weight: 600;
   margin-top: 50px;
   margin-bottom: 15px;
-`
+`;
 const MenuInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
   margin: 5px;
-  div{
+  div {
     margin-bottom: 15px;
   }
 `;
 const MenuPrice = styled.div`
   font-weight: 700;
-`
+`;
 const MapContainer = styled.div`
   display: flex;
   height: 400px;
@@ -166,10 +167,10 @@ const Bookbutton = styled.button`
   z-index: 100;
   align-self: center;
   justify-self: flex-end;
-  border-top-left-radius:7px;
-  border-top-right-radius:7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
   color: white;
-  background-color: rgba(21, 64, 99,0.9);
+  background-color: rgba(21, 64, 99, 0.9);
   p {
     :hover {
       transform: scale(1.05);
@@ -293,11 +294,11 @@ function ShopInfo({ userInfo }) {
                 </div>
               </ShopInfoCon>
               <ShopInfoCon lineOn={true}>
-              <FontAwesomeIcon icon={faPhone} />
+                <FontAwesomeIcon icon={faPhone} />
                 <div>
-                <div>전화번호</div>
-              <InfoText>{pickedShop.phone_number || "정보없음"}</InfoText>
-              </div>
+                  <div>전화번호</div>
+                  <InfoText>{pickedShop.phone_number || "정보없음"}</InfoText>
+                </div>
               </ShopInfoCon>
               <TitleDiv>메뉴정보</TitleDiv>
               {pickedShop.Menus.map((menu, idx) => (
@@ -307,7 +308,7 @@ function ShopInfo({ userInfo }) {
                   ) : null}
                   <MenuInfoDiv>
                     <div>{menu.name}</div>
-                    <MenuPrice>{menu.price.slice(0,-3)+',000'}</MenuPrice>
+                    <MenuPrice>{menu.price.slice(0, -3) + ",000"}</MenuPrice>
                   </MenuInfoDiv>
                 </MenuContainer>
               ))}

@@ -124,7 +124,7 @@ function Main({ searchWord }) {
   const [page, setPage] = useState(1);
   const [order, setOrder] = useState("");
   const offset = (page - 1) * 12;
-  
+
   const getShopList = useCallback(async () => {
     if (!chooseCategory && !chooseCategoryCity) {
       await axios
