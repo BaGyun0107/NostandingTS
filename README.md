@@ -1,4 +1,5 @@
 ## 진행상태
+
 -  main 기능 전체 확인
 -  mypage 예약까지 확인
 
@@ -11,12 +12,14 @@
 -   mysql 데이터를 가지고오기 위한 index.js 파일을 .ts 로 변경시 **'Error: No Sequelize instance passed'** 문제 발생  
     - .js파일인 상태로 유지
 -   회원가입 시, 데이터베이스에 경위도를 저장하게끔 로직을 만들었는데 경위도를 읽지 못하는 에러
--   main 페이지 카테고리가 묶음으로 움직이는 문제 발생
+-   main 카테고리가 두가지를 선택해야 가게들이 나오는 문제 발생
 
 ## **앞으로 계획하고 있는 것**
 
--   Nextfunction을 활용하여 오류핸들링하기
+-   Nextfunction을 활용하여 오류핸들링하기 `완료`
+    -  파일 생성 및 데이터 보내는 형식 확인, 모든 catch에 Nextfunction으로 오류 핸들링하기
 -   jwt.verify를 router로 옮겨 모든 파일에 있는 accessToken 확인하는 코드 줄이기
+    -  router에서 verify 작업할 수 있게 코드를 작성하였으나, 제대로 작동하는지 확인하기 
 -   socket.io로 실시간 알람 만들기
 -   현재 페이지네이션이 1~끝까지 모두 읽혀오는 코드로 작성되있으나, 1페이지마다 데이터를 불러오게끔 변경하기
 -   mysql 데이터를 가지고오기 위한 index.js 파일을 .ts 로 변경시 'Error: No Sequelize instance passed' 문제 발생하는 원인 파악 후 변경 시도
