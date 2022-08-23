@@ -4,19 +4,9 @@ import { initModels } from '../../models/init-models';
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
-const { userAuth } = require('../../middlewares/authorized/auth');
-
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      console.log(userInfo);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      // delete userInfo.dataValues.password;
-      // delete userInfo.dataValues.user_salt;
-
       const { user_name } = req.params;
       const shopInfo = await Models.Shop.findAll({
         include: [
@@ -42,13 +32,6 @@ module.exports = {
   },
   post: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
-
       const { shop_id, name, price } = req.body;
 
       const img = [null];
@@ -70,15 +53,8 @@ module.exports = {
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
-
       const { id } = req.params;
-      console.log(req.params);
+
       await Models.Menu.destroy({ where: { id: id } });
 
       res.status(201).send({ message: '정보 삭제 완료' });

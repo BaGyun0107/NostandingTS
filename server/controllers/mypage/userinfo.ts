@@ -4,7 +4,6 @@ import { Op } from 'sequelize';
 import util from 'util';
 import crypto from 'crypto';
 
-const { userAuth } = require('../../middlewares/authorized/auth');
 const pbkdf2Promise = util.promisify(crypto.pbkdf2);
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
@@ -12,29 +11,25 @@ const Models = initModels(sequelize);
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      // delete userInfo?.password;
-      // delete userInfo?.user_salt;
-      console.log(userInfo);
+      const { user_name } = req.params;
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
       return res
         .status(200)
         .send({ data: { userInfo: userInfo }, message: '조회 성공' });
     } catch (err) {
-      console.log(err);
       res.status(500).send({ message: 'Server Error' });
     }
   },
   patch: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user_name = req.params.user_name;
-      console.log(user_name);
+
       const userInfo = await Models.User.findOne({
         where: { user_name: user_name },
       });
-      console.log(userInfo);
+
       if (!userInfo) {
         return res.status(400).json({ message: '유저정보 없음' });
       } else {
@@ -208,8 +203,10 @@ module.exports = {
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      /* 로그인 인증 검사 */
-      const userInfo = await userAuth(req, res);
+      const { user_name } = req.params;
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
       if (!userInfo) return res.status(400).send({ message: '유저정보 없음' });
 
       await Models.User.destroy({ where: { id: userInfo.id } }); // 유저 삭제

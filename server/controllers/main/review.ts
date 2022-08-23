@@ -13,8 +13,6 @@ module.exports = {
       const userInfo = await Models.User.findOne({
         where: { user_name: user_name },
       });
-
-      console.log(userInfo);
       delete userInfo?.password;
       delete userInfo?.user_salt;
 

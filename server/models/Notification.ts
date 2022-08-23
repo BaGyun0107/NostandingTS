@@ -13,8 +13,8 @@ export interface NotificationAttributes {
   rereview_id?: number;
   contents?: string;
   read?: number;
-  created_date?: Date | number;
-  updated_date?: Date | number;
+  created_date?: Date | number | null;
+  updated_date?: Date | number | null;
   review?: number;
 }
 

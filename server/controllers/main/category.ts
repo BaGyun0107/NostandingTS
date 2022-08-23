@@ -4,16 +4,18 @@ import { initModels } from '../../models/init-models';
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
-const Op = require('sequelize');
+import { Op } from 'sequelize';
 
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     // 가게 이름 , 주소 ,
-    const { order } = req.query;
+    const order = req.query.order;
 
     try {
       if (order === 'score') {
-        const { shop_category, shop_category_city } = req.query;
+        const shop_category = req.query.shop_category;
+        const shop_category_city = req.query.shop_category_city;
+
         const shopInfo = await Models.Shop.findAll({
           include: [
             {
@@ -21,10 +23,12 @@ module.exports = {
               as: 'user',
               where: {
                 [Op.and]: [
-                  shop_category ? { shop_category: shop_category } : undefined,
+                  shop_category
+                    ? { shop_category: shop_category }
+                    : { shop_category: null },
                   shop_category_city
                     ? { shop_category_city: shop_category_city }
-                    : undefined,
+                    : { shop_category_city: null },
                 ],
               },
               attributes: [
@@ -50,27 +54,13 @@ module.exports = {
           order: [['score_average', 'DESC']],
         });
 
-        // const arrInfo: Array<object> = [];
-        // shopInfo.map(el => {
-        //   arrInfo.push({
-        //     image_src: el.image_src,
-        //     id: el.id,
-        //     shop_category: el.user.shop_category,
-        //     shop_category_city: el.user.shop_category_city,
-        //     shop_name: el.user.shop_name,
-        //     address_line1: el.user.address_line1,
-        //     address_line2: el.user.address_line2,
-        //     is_marked: el.Bookmarks.is_marked,
-        //     total_views: el.total_views,
-        //     score_average: el.score_average,
-        //   });
-        // });
-
         return res
           .status(200)
           .send({ data: shopInfo, message: '정보 전달 완료' });
       } else if (order === 'view') {
-        const { shop_category, shop_category_city } = req.query;
+        const shop_category = req.query.shop_category;
+        const shop_category_city = req.query.shop_category_city;
+
         const shopInfo = await Models.Shop.findAll({
           include: [
             {
@@ -78,10 +68,12 @@ module.exports = {
               as: 'user',
               where: {
                 [Op.and]: [
-                  shop_category ? { shop_category: shop_category } : undefined,
+                  shop_category
+                    ? { shop_category: shop_category }
+                    : { shop_category: null },
                   shop_category_city
                     ? { shop_category_city: shop_category_city }
-                    : undefined,
+                    : { shop_category_city: null },
                 ],
               },
               attributes: [
@@ -107,27 +99,13 @@ module.exports = {
           order: [['total_views', 'DESC']],
         });
 
-        // const arrInfo: Array<object> = [];
-        // shopInfo.map(el => {
-        //   arrInfo.push({
-        //     image_src: el.image_src,
-        //     id: el.id,
-        //     shop_category: el.user.shop_category,
-        //     shop_category_city: el.user.shop_category_city,
-        //     shop_name: el.user.shop_name,
-        //     address_line1: el.user.address_line1,
-        //     address_line2: el.user.address_line2,
-        //     // is_marked: el.Bookmarks.is_marked,
-        //     total_views: el.total_views,
-        //     score_average: el.score_average,
-        //   });
-        // });
-
         return res
           .status(200)
           .send({ data: shopInfo, message: '정보 전달 완료' });
       } else {
-        const { shop_category, shop_category_city } = req.query;
+        const shop_category = req.query.shop_category;
+        const shop_category_city = req.query.shop_category_city;
+
         const shopInfo = await Models.Shop.findAll({
           include: [
             {
@@ -135,10 +113,12 @@ module.exports = {
               as: 'user',
               where: {
                 [Op.and]: [
-                  shop_category ? { shop_category: shop_category } : undefined,
+                  shop_category
+                    ? { shop_category: shop_category }
+                    : { shop_category: null },
                   shop_category_city
                     ? { shop_category_city: shop_category_city }
-                    : undefined,
+                    : { shop_category_city: null },
                 ],
               },
               attributes: [
@@ -163,22 +143,6 @@ module.exports = {
           attributes: ['id', 'image_src', 'total_views', 'score_average'],
           order: [[{ model: Models.User, as: 'user' }, 'shop_name', 'ASC']],
         });
-
-        // const arrInfo: Array<object> = [];
-        // shopInfo.map(el => {
-        //   arrInfo.push({
-        //     image_src: el.image_src,
-        //     id: el.id,
-        //     shop_category: el.user.shop_category,
-        //     shop_category_city: el.user.shop_category_city,
-        //     shop_name: el.user.shop_name,
-        //     address_line1: el.user.address_line1,
-        //     address_line2: el.user.address_line2,
-        //     // is_marked: el.Bookmarks.is_marked,
-        //     total_views: el.total_views,
-        //     score_average: el.score_average,
-        //   });
-        // });
 
         return res
           .status(200)

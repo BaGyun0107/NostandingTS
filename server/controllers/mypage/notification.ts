@@ -7,19 +7,14 @@ import { Op } from 'sequelize';
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
 
-const { userAuth } = require('../../middlewares/authorized/auth');
-
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo?.password;
-      delete userInfo?.user_salt;
+      const user_name = req.params.user_name;
 
-      const { user_name } = req.params;
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
 
       // 현재 시간(Local)
       const curr = new Date();
@@ -45,7 +40,7 @@ module.exports = {
           },
           {
             model: Models.Review,
-            as: 'Review',
+            as: 'reviews',
           },
           {
             model: Models.ReReview,
@@ -53,7 +48,7 @@ module.exports = {
           },
         ],
         order: [['id', 'DESC']],
-        where: { user_id: userInfo.dataValues.id },
+        where: { user_id: userInfo?.id },
       });
 
       if (notificationInfo) {
@@ -68,21 +63,20 @@ module.exports = {
       return res.status(500).send({ message: 'Server Error' });
     }
   },
-  patch: async (req, res) => {
+  patch: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
+      const user_name = req.params.user_name;
+      const id = req.body.id;
+      const read = req.body.read;
 
-      const { id, read } = req.body;
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
       const notificationUpdate = await Models.Notification.update(
         {
           read: read,
         },
-        { where: { user_id: userInfo.dataValues.id, id: id } },
+        { where: { user_id: userInfo?.id, id: id } },
       );
       return res.status(200).send({
         data: { notificationInfo: notificationUpdate },
@@ -92,21 +86,20 @@ module.exports = {
       res.status(500).send({ message: 'Server Error' });
     }
   },
-  reviewpatch: async (req, res) => {
+  reviewpatch: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
+      const user_name = req.params.user_name;
+      const id = req.body.id;
+      const review = req.body.review;
 
-      const { id, review } = req.body;
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
       const notificationUpdate = await Models.Notification.update(
         {
           review: review,
         },
-        { where: { user_id: userInfo.dataValues.id, id: id } },
+        { where: { user_id: userInfo?.id, id: id } },
       );
       return res.status(200).send({
         data: { notificationInfo: notificationUpdate },

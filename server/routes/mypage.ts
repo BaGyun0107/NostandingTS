@@ -6,6 +6,7 @@ const delete_menu = require('../middlewares/deleteS3/delete_menu');
 const upload = require('../middlewares/upload/upload');
 const uploadMenu = require('../middlewares/upload/upload_menu');
 const delete_shop = require('../middlewares/deleteS3/delete_shop');
+const { isAuthorized } = require('../middlewares/tokenFunction/token');
 
 /**
  * @swagger
@@ -56,25 +57,21 @@ const delete_shop = require('../middlewares/deleteS3/delete_shop');
  *   description: 유저 정보 조회 수정
  */
 
-router.get('/reservation/:user_name', mypage.reservation.get);
-router.post(
-  '/reservation/:user_name',
-
-  mypage.reservation.post,
-);
+router.get('/reservation/:user_name', isAuthorized, mypage.reservation.get);
+router.post('/reservation/:user_name', mypage.reservation.post);
 router.delete('/reservation/:user_name/:id', mypage.reservation.delete);
 
-router.get('/bookmark/:user_name', mypage.bookmark.get);
+router.get('/bookmark/:user_name', isAuthorized, mypage.bookmark.get);
 
-router.get('/img/:user_name', mypage.img.get);
+router.get('/img/:user_name', isAuthorized, mypage.img.get);
 router.post('/img/:user_name', upload.array('file', 4), mypage.img.post);
 router.patch('/img/:user_name', mypage.img.patch);
 
-router.get('/menu/:user_name', mypage.menu.get);
+router.get('/menu/:user_name', isAuthorized, mypage.menu.get);
 router.post('/menu/:user_name', mypage.menu.post);
 router.delete('/menu/:user_name/:id', mypage.menu.delete);
 
-router.get('/notification/:user_name', mypage.notification.get);
+router.get('/notification/:user_name', isAuthorized, mypage.notification.get);
 router.patch('/notification/:user_name', mypage.notification.patch);
 router.patch(
   '/notification/reviewpatch/:user_name',
@@ -82,14 +79,14 @@ router.patch(
 );
 router.delete('/notification/:user_name', mypage.notification.delete);
 
-router.get('/re_review/:user_name', mypage.re_review.get);
+router.get('/re_review/:user_name', isAuthorized, mypage.re_review.get);
 router.post('/re_review/:review_id/:user_name', mypage.re_review.post);
 router.delete('/re_review/:rereview_id', mypage.re_review.delete);
 
-router.get('/shopinfo/:user_name', mypage.shopinfo.get);
+router.get('/shopinfo/:user_name', isAuthorized, mypage.shopinfo.get);
 router.post('/shopinfo/:user_name', mypage.shopinfo.post);
 
-router.get('/userinfo/:user_name', mypage.userinfo.get);
+router.get('/userinfo/:user_name', isAuthorized, mypage.userinfo.get);
 router.patch('/userinfo/:user_name', mypage.userinfo.patch);
 router.delete('/userinfo/:user_name', mypage.userinfo.delete);
 

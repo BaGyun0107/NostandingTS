@@ -1,3 +1,4 @@
+import { Request, Response, NextFunction } from 'express';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -38,6 +39,18 @@ app.use('/mypage', mypageRouter);
 app.use('/oauth', oauthRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+//? next()를 활용하여 에러핸들링을 간편하게 할 수 있다.
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const errorStatus: number = err['status'] || 500;
+  const errorMessage: string = err.message || 'Somthing went wrong';
+  return res.status(errorStatus).json({
+    success: false,
+    status: errorStatus,
+    message: errorMessage,
+    stack: err.stack,
+  });
+});
 
 const PORT = process.env.HTTP_PORT || 4000;
 

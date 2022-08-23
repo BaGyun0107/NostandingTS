@@ -3,15 +3,14 @@ import { initModels } from '../../models/init-models';
 
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
-const { userAuth } = require('../../middlewares/authorized/auth');
 
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const user_name = req.params;
+      const user_name = req.params.user_name;
 
       //고객 정보 불러오기
-      const userInfo2 = await Models.User.findOne({
+      const userInfo = await Models.User.findOne({
         include: [
           {
             model: Models.Review,
@@ -36,13 +35,14 @@ module.exports = {
         attributes: ['is_master', 'nickname'],
         order: [[{ model: Models.Review, as: 'Reviews' }, 'id', 'DESC']],
       });
-      const is_master = userInfo2?.is_master;
+
+      const is_master = userInfo?.is_master;
 
       if (is_master === 0) {
         // 유저일 때
         let shopArr: Array<object> = [];
-        if (userInfo2)
-          for (let n = 0; n < userInfo2?.Reviews.length; n++) {
+        if (userInfo)
+          for (let n = 0; n < userInfo?.Reviews.length; n++) {
             const shopinfo = await Models.Shop.findOne({
               include: [
                 {
@@ -51,7 +51,7 @@ module.exports = {
                   attributes: ['shop_name'],
                 },
               ],
-              where: { id: userInfo2?.Reviews[n].shop_id },
+              where: { id: userInfo?.Reviews[n].shop_id },
               attributes: ['id', 'image_src'],
             });
             if (shopinfo) shopArr.push(shopinfo);
@@ -59,7 +59,7 @@ module.exports = {
 
         return res
           .status(200)
-          .send({ data: userInfo2, shopArr, message: '정보 전달 완료' });
+          .send({ data: userInfo, shopArr, message: '정보 전달 완료' });
       }
       if (is_master === 1) {
         // 점주일 때
@@ -117,15 +117,12 @@ module.exports = {
   },
   post: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
-
       const review_id: number = Number(req.params.review_id);
       const user_name = req.params.user_name;
+
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
 
       const shopInfo = await Models.Shop.findOne({
         include: [
@@ -198,13 +195,6 @@ module.exports = {
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).json({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
-
       const { rereview_id } = req.params;
 
       await Models.ReReview.destroy({ where: { id: rereview_id } });

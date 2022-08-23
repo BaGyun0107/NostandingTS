@@ -195,11 +195,9 @@ module.exports = {
             Authorization: `KakaoAK ${process.env.KAKAO_CLIENT_ID}`,
           };
 
-          const info = await axios
+          const info: any = await axios
             .get(url, { headers: headers })
             .catch(err => res.send(err));
-
-          console.log(info);
 
           if (newUser)
             await Models.Shop.create({
@@ -209,8 +207,8 @@ module.exports = {
               phone_number: phone_number,
               holiday: undefined,
               contents: undefined,
-              // x: info.data.documents[0].x,
-              // y: info.data.documents[0].y,
+              x: info.data.documents[0].x,
+              y: info.data.documents[0].y,
               place_url: undefined,
             });
           return res.status(201).send({ message: '회원가입 완료' });

@@ -106,7 +106,7 @@
 //   },
 // );
 
-// const db: {} = {
+// const db = {
 //   ...initModels(sequelize),
 //   sequelize: sequelize,
 //   Sequelize: Sequelize,

@@ -5,10 +5,10 @@ const db = require('../../models');
 
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
-    let { text } = req.query;
+    let text = req.query.text;
 
     // req로 받는 문자 띄어쓰기 구별하기
-    text = `%${String(text).replace(/ /gi, '%')}%`;
+    if (!text) text = `%${text?.replace(/ /gi, '%')}%`;
 
     // DB에 저장되있는 값의 띄어쓰기 찾기
 

@@ -59,8 +59,12 @@ function SearchList({ shopInfo }) {
   return (
     <Container>
       <Img src={img}></Img>
-      <InfoDiv weight={true}>{shopInfo.user.shop_name}</InfoDiv>
-      <InfoDiv color={"true"}>{shopInfo.user.shop_category_city}</InfoDiv>
+      <InfoDiv weight={true}>
+        {shopInfo.shop_name ?? shopInfo.user.shop_name}
+      </InfoDiv>
+      <InfoDiv color={"true"}>
+        {shopInfo.shop_category_city ?? shopInfo.user.shop_name}
+      </InfoDiv>
       <FlexRow>
         <ScoreDiv>★ {score}</ScoreDiv>
         <ReviewDiv>✎ {reviewNum}</ReviewDiv>

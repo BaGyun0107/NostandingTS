@@ -56,23 +56,6 @@ module.exports = {
         attributes: ['image_src', 'id', 'total_views', 'score_average'],
         order: [['score_average', 'DESC']],
       });
-      // console.log(mainInfo);
-      // const arrInfo: Array<object> = [];
-      // mainInfo.map(el => {
-      //   arrInfo.push({
-      //     image_src: el.image_src,
-      //     id: el.id,
-      //     shop_category: el.user.shop_category,
-      //     shop_category_city: el.user.shop_category_city,
-      //     shop_name: el.user.shop_name,
-      //     address_line1: el.user.address_line1,
-      //     address_line2: el.user.address_line2,
-      //     // is_marked: el.Bookmarks.is_marked,
-      //     total_views: el.total_views,
-      //     score_average: el.score_average,
-      //   });
-      // });
-      // console.log(arrInfo);
       return res
         .status(200)
         .send({ data: mainInfo, message: '별점 재정렬 전달 완료' });
@@ -125,23 +108,6 @@ module.exports = {
         order: [['total_views', 'DESC']],
       });
 
-      // const arrInfo: Array<object> = [];
-      // mainInfo.map(el => {
-      //   arrInfo.push({
-      //     image_src: el.image_src,
-      //     id: el.id,
-      //     shop_category: el.user.shop_category,
-      //     shop_category_city: el.user.shop_category_city,
-      //     shop_name: el.user.shop_name,
-      //     address_line1: el.user.address_line1,
-      //     address_line2: el.user.address_line2,
-      //     //! is_marked 왜 안읽히는지 알아보기
-      //     // is_marked: el.Bookmarks.is_marked,
-      //     total_views: el.total_views,
-      //     score_average: el.score_average,
-      //   });
-      // });
-
       return res
         .status(200)
         .send({ data: mainInfo, message: '리뷰수 재정렬 전달 완료' });
@@ -191,22 +157,6 @@ module.exports = {
         attributes: ['image_src', 'id', 'total_views', 'score_average'],
         order: [[{ model: Models.User, as: 'user' }, 'shop_name', 'ASC']],
       });
-
-      // const arrInfo: Array<object> = [];
-      // mainInfo.map(el => {
-      //   arrInfo.push({
-      //     image_src: el.image_src,
-      //     id: el.id,
-      //     shop_category: el.user.shop_category,
-      //     shop_category_city: el.user.shop_category_city,
-      //     shop_name: el.user.shop_name,
-      //     address_line1: el.user.address_line1,
-      //     address_line2: el.user.address_line2,
-      //     // is_marked: el.Bookmarks.is_marked,
-      //     total_views: el.total_views,
-      //     score_average: el.score_average,
-      //   });
-      // });
 
       return res
         .status(200)

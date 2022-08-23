@@ -3,18 +3,10 @@ import { initModels } from '../../models/init-models';
 
 const { sequelize } = require('../../models');
 const Models = initModels(sequelize);
-const { userAuth } = require('../../middlewares/authorized/auth');
 
 module.exports = {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userInfo = await userAuth(req, res);
-      if (!userInfo) {
-        return res.status(400).send({ message: '유저정보 없음' });
-      }
-      delete userInfo.dataValues.password;
-      delete userInfo.dataValues.user_salt;
-
       const { user_name } = req.params;
       const shopInfo = await Models.Shop.findAll({
         include: [
@@ -116,19 +108,15 @@ module.exports = {
     }
   },
   patch: async (req: Request, res: Response, next: NextFunction) => {
-    const userInfo = await userAuth(req, res);
-    if (!userInfo) {
-      return res.status(400).json({ message: '유저정보 없음' });
-    }
-    delete userInfo.dataValues.password;
-    delete userInfo.dataValues.user_salt;
-
     try {
       const { user_name } = req.params;
+      const userInfo = await Models.User.findOne({
+        where: { user_name: user_name },
+      });
       const image_number = req.body;
       const shopInfo = await Models.Shop.findOne({
         where: {
-          user_id: userInfo.dataValues.id,
+          user_id: userInfo?.id,
         },
         attributes: ['image_src'],
       });
@@ -146,7 +134,7 @@ module.exports = {
           },
           {
             where: {
-              user_id: userInfo.dataValues.id,
+              user_id: userInfo?.id,
             },
           },
         );

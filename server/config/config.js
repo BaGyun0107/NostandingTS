@@ -8,6 +8,7 @@ module.exports = {
     host: process.env.RDS_HOSTNAME,
     port: process.env.RDS_PORT,
     dialect: 'mysql',
+    // timezone: 'Asia/Seoul',
   },
   test: {
     username: process.env.DATABASE_USERNAME,
@@ -16,6 +17,7 @@ module.exports = {
     host: process.env.RDS_HOSTNAME,
     port: process.env.RDS_PORT,
     dialect: 'mysql',
+    // timezone: 'Asia/Seoul',
   },
   production: {
     username: process.env.DATABASE_USERNAME,
@@ -24,5 +26,6 @@ module.exports = {
     host: process.env.RDS_HOSTNAME,
     port: process.env.RDS_PORT,
     dialect: 'mysql',
+    // timezone: 'Asia/Seoul',
   },
 };
