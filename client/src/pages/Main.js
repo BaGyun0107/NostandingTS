@@ -122,8 +122,9 @@ function Main({ searchWord }) {
   const [backgroundOn, setBackgroundOn] = useState("");
   const [backgroundCity, setBackgroundCity] = useState("");
   const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(12);
   const [order, setOrder] = useState("");
-  const offset = (page - 1) * 12;
+  const offset = (page - 1) * limit;
 
   const getShopList = useCallback(async () => {
     if (!chooseCategory && !chooseCategoryCity) {
@@ -157,13 +158,13 @@ function Main({ searchWord }) {
           `${process.env.REACT_APP_API_URL}/category?shop_category=${chooseCategory}&shop_category_city=${chooseCategoryCity}&order=${order}`
         )
         .then((resp) => setShop(resp.data.data));
-    } else if (chooseCategory === "") {
+    } else if (chooseCategoryCity !== "") {
       await axios
         .get(
           `${process.env.REACT_APP_API_URL}/category?shop_category_city=${chooseCategoryCity}&order=${order}`
         )
         .then((resp) => setShop(resp.data.data));
-    } else if (chooseCategoryCity === "") {
+    } else if (chooseCategory !== "") {
       await axios
         .get(
           `${process.env.REACT_APP_API_URL}/category?shop_category=${chooseCategory}&order=${order}`
@@ -255,7 +256,7 @@ function Main({ searchWord }) {
         </SortDiv>
       </FlexCol>
       <ListView>
-        {shop.slice(offset, offset + 12).map((shop) => {
+        {shop.slice(offset, offset + limit).map((shop) => {
           return (
             <div key={shop.id}>
               <Link to={`/ShopInfo/${shop.id}`}>
@@ -266,7 +267,12 @@ function Main({ searchWord }) {
         })}
         <div>{isLoading && <Loader />}</div>
         <footer>
-          <Pagination total={shop.length} page={page} setPage={setPage} />
+          <Pagination
+            total={shop.length}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
         </footer>
       </ListView>
     </>
